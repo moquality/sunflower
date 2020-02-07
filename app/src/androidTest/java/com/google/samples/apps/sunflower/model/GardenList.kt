@@ -23,7 +23,17 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.samples.apps.sunflower.R
 import org.hamcrest.Matchers.allOf
 
-object GardenList {
+class GardenList {
+    companion object {
+        private val instance = GardenList()
+        fun get() = instance
+    }
+
+    fun openDescription(name: String): PlantDescription<GardenList> {
+        onView(withText(name)).perform(click())
+        return PlantDescription.from(this)
+    }
+
     fun openPlantList(useAddButton: Boolean): PlantList {
         val matcher = if (useAddButton) {
             withId(R.id.add_plant)
@@ -32,26 +42,35 @@ object GardenList {
         }
 
         onView(matcher).perform(click())
-        return PlantList
+        return PlantList.get()
     }
 }
 
-object PlantList {
-    fun openDescription(name: String): PlantDescription {
+class PlantList {
+    companion object {
+        private val instance = PlantList()
+        fun get() = instance
+    }
+
+    fun openDescription(name: String): PlantDescription<PlantList> {
         onView(withText(name)).perform(click())
-        return PlantDescription
+        return PlantDescription.from(this)
     }
 
     fun openGardenList(): GardenList {
         onView(withContentDescription("My garden")).perform(click())
-        return GardenList
+        return GardenList.get()
     }
 }
 
-object PlantDescription {
-    fun add(): PlantDescription {
+class PlantDescription<T>(private val parent: T) {
+    companion object {
+        fun <T> from(parent: T) = PlantDescription(parent)
+    }
+
+    fun add(): PlantDescription<T> {
         onView(withId(R.id.fab))
-                .withFailureHandler { error, viewMatcher ->
+                .withFailureHandler { error, _ ->
                     if (error !is PerformException) {
                         throw error
                     }
@@ -62,8 +81,8 @@ object PlantDescription {
         return this
     }
 
-    fun backToList(): PlantList {
+    fun backToList(): T {
         onView(allOf(withParent(withId(R.id.toolbar)), withParentIndex(0))).perform(click())
-        return PlantList
+        return parent
     }
 }

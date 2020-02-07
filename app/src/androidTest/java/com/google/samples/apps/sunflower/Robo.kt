@@ -31,7 +31,7 @@ class Robo {
 
     @Test
     fun model() {
-        GardenList
+        GardenList.get()
                 .openPlantList(false)
                 .openDescription("Avocado")
                 .add()
@@ -60,7 +60,7 @@ class Robo {
               },
               "backToList": {
                 "params": [],
-                "returns": "com.google.samples.apps.sunflower.model.PlantList",
+                "returns": "generic",
                 "weight": 1
               }
             }
@@ -71,7 +71,7 @@ class Robo {
                 "params": [
                   {
                     "type": "java.lang.String",
-                    "valid": ["Avocado", "Eggplant", "Apple", "Grape", "Hibiscus", "Beet", "Tomato", "Sunflower", "Watermelon"]
+                    "valid": ["Apple", "Avocado", "Eggplant"]
                   }
                 ],
                 "returns": "com.google.samples.apps.sunflower.model.PlantDescription",
@@ -86,6 +86,16 @@ class Robo {
           },
           "com.google.samples.apps.sunflower.model.GardenList": {
             "methods": {
+              "openDescription": {
+                "params": [
+                  {
+                    "type": "java.lang.String",
+                    "valid": ["Apple", "Avocado", "Eggplant"]
+                  }
+                ],
+                "returns": "com.google.samples.apps.sunflower.model.PlantDescription",
+                "weight": 1
+              },
               "openPlantList": {
                 "params": [
                   {
@@ -99,6 +109,6 @@ class Robo {
           }
         }""")
 
-        RoboTest(config).run(GardenList)
+        RoboTest(config).run(GardenList.get())
     }
 }
