@@ -33,10 +33,12 @@ class Robo {
     fun model() {
         GardenList.get()
                 .openPlantList(false)
+                .expectPlantList()
                 .openDescription("Avocado")
                 .add()
                 .backToList()
                 .openGardenList()
+                .expectGardenList()
     }
 
     @Test
@@ -79,8 +81,14 @@ class Robo {
               },
               "openGardenList": {
                 "params": [],
+                "returns": "com.google.samples.apps.sunflower.model.PlantList",
+                "weight": 1,
+                "after": "expectGardenList"
+              },
+              "expectGardenList": {
+                "params": [],
                 "returns": "com.google.samples.apps.sunflower.model.GardenList",
-                "weight": 1
+                "weight": 0
               }
             }
           },
@@ -102,8 +110,14 @@ class Robo {
                     "type": "boolean"
                   }
                 ],
+                "returns": "com.google.samples.apps.sunflower.model.GardenList",
+                "weight": 1,
+                "after": "expectPlantList"
+              },
+              "expectPlantList": {
+                "params": [],
                 "returns": "com.google.samples.apps.sunflower.model.PlantList",
-                "weight": 1
+                "weight": 0
               }
             }
           }

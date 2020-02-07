@@ -34,7 +34,7 @@ class GardenList {
         return PlantDescription.from(this)
     }
 
-    fun openPlantList(useAddButton: Boolean): PlantList {
+    fun openPlantList(useAddButton: Boolean): GardenList {
         val matcher = if (useAddButton) {
             withId(R.id.add_plant)
         } else {
@@ -42,6 +42,10 @@ class GardenList {
         }
 
         onView(matcher).perform(click())
+        return this
+    }
+
+    fun expectPlantList(): PlantList {
         return PlantList.get()
     }
 }
@@ -57,8 +61,12 @@ class PlantList {
         return PlantDescription.from(this)
     }
 
-    fun openGardenList(): GardenList {
+    fun openGardenList(): PlantList {
         onView(withContentDescription("My garden")).perform(click())
+        return this
+    }
+
+    fun expectGardenList(): GardenList {
         return GardenList.get()
     }
 }
