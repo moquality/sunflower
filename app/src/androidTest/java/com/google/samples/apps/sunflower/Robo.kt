@@ -19,6 +19,7 @@ package com.google.samples.apps.sunflower
 import androidx.test.rule.ActivityTestRule
 import com.google.gson.GsonBuilder
 import com.google.samples.apps.sunflower.model.GardenList
+import com.google.samples.apps.sunflower.model.PlantList
 import com.moquality.android.RoboConfig
 import com.moquality.android.RoboTest
 import com.moquality.android.genModels
@@ -50,78 +51,12 @@ class Robo {
         gson.toJson(model)
     }
 
+    @ExperimentalStdlibApi
     @Test
     fun robo() {
-        val config = RoboConfig("""{
-          "com.google.samples.apps.sunflower.model.PlantDescription": {
-            "methods": {
-              "add": {
-                "params": [],
-                "returns": "com.google.samples.apps.sunflower.model.PlantDescription",
-                "weight": 1
-              },
-              "backToList": {
-                "params": [],
-                "returns": "generic",
-                "weight": 1
-              }
-            }
-          },
-          "com.google.samples.apps.sunflower.model.PlantList": {
-            "methods": {
-              "openDescription": {
-                "params": [
-                  {
-                    "type": "java.lang.String",
-                    "valid": ["Apple", "Avocado", "Eggplant"]
-                  }
-                ],
-                "returns": "com.google.samples.apps.sunflower.model.PlantDescription",
-                "weight": 1
-              },
-              "openGardenList": {
-                "params": [],
-                "returns": "com.google.samples.apps.sunflower.model.PlantList",
-                "weight": 1,
-                "after": "expectGardenList"
-              },
-              "expectGardenList": {
-                "params": [],
-                "returns": "com.google.samples.apps.sunflower.model.GardenList",
-                "weight": 0
-              }
-            }
-          },
-          "com.google.samples.apps.sunflower.model.GardenList": {
-            "methods": {
-              "openDescription": {
-                "params": [
-                  {
-                    "type": "java.lang.String",
-                    "valid": ["Apple", "Avocado", "Eggplant"]
-                  }
-                ],
-                "returns": "com.google.samples.apps.sunflower.model.PlantDescription",
-                "weight": 1
-              },
-              "openPlantList": {
-                "params": [
-                  {
-                    "type": "boolean"
-                  }
-                ],
-                "returns": "com.google.samples.apps.sunflower.model.GardenList",
-                "weight": 1,
-                "after": "expectPlantList"
-              },
-              "expectPlantList": {
-                "params": [],
-                "returns": "com.google.samples.apps.sunflower.model.PlantList",
-                "weight": 0
-              }
-            }
-          }
-        }""")
+        val file = javaClass.classLoader?.getResourceAsStream("assets/roboconfig.json")
+                ?: error("Unable to find robo config file")
+        val config = RoboConfig(file.readBytes().decodeToString())
 
         RoboTest(config).run(GardenList.get())
     }
