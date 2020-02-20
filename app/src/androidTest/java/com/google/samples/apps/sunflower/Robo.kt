@@ -43,7 +43,23 @@ class Robo {
 
     @Test
     fun robo() {
-        RoboTest(Config).run(GardenList.get())
+        val state = RoboTest(Config).run(GardenList.get(), 3)
+
+        fun RoboState?.forEach(f: (state: RoboState) -> Unit) {
+            if (this == null) {
+                return
+            }
+
+            f(this)
+            return this.previous.forEach(f)
+        }
+
+        state.forEach {
+            val error = it.error
+            if (error != null) {
+                System.err.println("${it.previous?.currentPage?.simpleName}.${it.method}(): ${error.message}")
+            }
+        }
     }
 }
 
