@@ -17,14 +17,13 @@
 package com.google.samples.apps.sunflower
 
 import androidx.test.rule.ActivityTestRule
-import com.google.gson.GsonBuilder
 import com.google.samples.apps.sunflower.model.GardenList
-import com.google.samples.apps.sunflower.model.PlantList
 import com.moquality.android.RoboConfig
+import com.moquality.android.RoboState
 import com.moquality.android.RoboTest
-import com.moquality.android.genModels
 import org.junit.Rule
 import org.junit.Test
+import java.lang.reflect.Method
 
 class Robo {
     @get:Rule
@@ -43,21 +42,14 @@ class Robo {
     }
 
     @Test
-    fun generate() {
-        val model = genModels(GardenList::class.java)
-        val gson = GsonBuilder().run {
-            setPrettyPrinting()
-        }.create()
-        gson.toJson(model)
-    }
-
-    @ExperimentalStdlibApi
-    @Test
     fun robo() {
-        val file = javaClass.classLoader?.getResourceAsStream("assets/roboconfig.json")
-                ?: error("Unable to find robo config file")
-        val config = RoboConfig(file.readBytes().decodeToString())
+        RoboTest(Config).run(GardenList.get())
+    }
+}
 
-        RoboTest(config).run(GardenList.get())
+object Config : RoboConfig {
+    override fun generateArguments(state: RoboState, method: Method) = when (method.name) {
+        "openDescription" -> listOf(arrayOf("Avocado", "Tomato", "Apple").random())
+        else -> super.generateArguments(state, method)
     }
 }
