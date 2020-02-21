@@ -57,7 +57,7 @@ class Robo {
         state.forEach {
             val error = it.error
             if (error != null) {
-                System.err.println("${it.previous?.currentPage?.simpleName}.${it.method}(): ${error.message}")
+                System.err.println("${it.previous?.currentPage?.simpleName}.${it.method?.name}(${it.args.joinToString(", ")}): ${error.localizedMessage.substringBefore("\n")}")
             }
         }
     }
