@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.sunflower.model
+package com.google.samples.apps.sunflower
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.PerformException
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
-import com.google.samples.apps.sunflower.R
 import org.hamcrest.Matchers.allOf
 
 class GardenList {
@@ -33,6 +32,8 @@ class GardenList {
         onView(withText(name)).perform(click())
         return PlantDescription.from(this)
     }
+
+    fun longTest(v: Long): GardenList = this
 
     fun openPlantList(useAddButton: Boolean): GardenList {
         val matcher = if (useAddButton) {

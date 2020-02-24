@@ -17,7 +17,6 @@
 package com.google.samples.apps.sunflower
 
 import androidx.test.rule.ActivityTestRule
-import com.google.samples.apps.sunflower.model.GardenList
 import com.moquality.android.RoboConfig
 import com.moquality.android.RoboState
 import com.moquality.android.RoboTest
