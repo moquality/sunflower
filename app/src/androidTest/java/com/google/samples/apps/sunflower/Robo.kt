@@ -43,7 +43,7 @@ class Robo {
 
     @Test
     fun robo() {
-        val state = RoboTest(Config).run(GardenList.get(), 3)
+        val state = RoboTest(Config).run(GardenList.get())
 
         fun RoboState?.forEach(f: (state: RoboState) -> Unit) {
             if (this == null) {

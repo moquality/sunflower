@@ -84,4 +84,5 @@ dependencies {
     androidTestImplementation "com.google.truth:truth:$rootProject.truthVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     androidTestImplementation project(path: ':androidtest-library')
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
