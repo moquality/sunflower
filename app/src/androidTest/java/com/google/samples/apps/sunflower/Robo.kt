@@ -20,6 +20,7 @@ import androidx.test.rule.ActivityTestRule
 import com.moquality.android.RoboConfig
 import com.moquality.android.RoboState
 import com.moquality.android.RoboTest
+import com.moquality.android.printStackTrace
 import org.junit.Rule
 import org.junit.Test
 import java.lang.reflect.Method
@@ -48,7 +49,7 @@ class Robo {
 }
 
 object Config : RoboConfig {
-    override fun generateArguments(state: RoboState, method: Method) = when (method.name) {
+    override fun generateArguments(state: List<RoboState>, method: Method) = when (method.name) {
         "openDescription" -> listOf(arrayOf("Avocado", "Tomato", "Apple").random())
         else -> super.generateArguments(state, method)
     }
